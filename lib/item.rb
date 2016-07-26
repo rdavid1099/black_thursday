@@ -9,13 +9,13 @@ class Item
               :repo
 
   def initialize(information, repo)
-    @id = information[0]
-    @name = information[1]
-    @description = information[2]
-    @unit_price = information[3]
-    @merchant_id = information[4]
-    @creation_date = information[5]
-    @last_updated = information[6]
+    @id = information[:id]
+    @name = information[:name]
+    @description = information[:description]
+    @unit_price = information[:price]
+    @merchant_id = information[:merchant_id]
+    @creation_date = information[:creation_date]
+    @last_updated = information[:last_updated]
     @repo = repo
   end
 
