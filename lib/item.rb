@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 class Item
   attr_reader :id,
               :name,
@@ -12,14 +14,22 @@ class Item
     @id = information[:id]
     @name = information[:name]
     @description = information[:description]
-    @unit_price = information[:price]
+    @unit_price = BigDecimal.new(information[:price],4)
     @merchant_id = information[:merchant_id]
-    @creation_date = information[:creation_date]
-    @last_updated = information[:last_updated]
+    @creation_date = convert_time(information[:creation_date])
+    @last_updated = convert_time(information[:last_updated])
     @repo = repo
   end
 
   def unit_price_to_dollars
     unit_price.to_f
+  end
+
+  def convert_time(raw_time)
+    split_time = raw_time.split(/[\s:-]/)
+    split_time = split_time[0..split_time.length - 2].map do |digit|
+      digit.to_i
+    end
+    Time.utc(split_time[0], split_time[1], split_time[2], split_time[3], split_time[4], split_time[5])
   end
 end
