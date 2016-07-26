@@ -40,14 +40,14 @@ class TestItems < Minitest::Test
 
   def test_item_knows_creation_date_and_time
     item = Item.new({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :price => "5000", :merchant_id => "12334395", :creation_date => "2016-01-11 11:46:07 UTC", :last_updated => "1999-09-10 14:00:52 UTC"}, self)
-    creation = "2016-01-11 11:46:07 UTC"
+    creation = Time.utc(2016, 01, 11, 11, 46, 07)
 
     assert_equal creation, item.creation_date
   end
 
   def test_item_knows_last_updated_date
     item = Item.new({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :price => "5000", :merchant_id => "12334395", :creation_date => "2016-01-11 11:46:07 UTC", :last_updated => "1999-09-10 14:00:52 UTC"}, self)
-    last_updated = "1999-09-10 14:00:52 UTC"
+    last_updated = Time.utc(1999, 9, 10, 14, 00, 52)
 
     assert_equal last_updated, item.last_updated
   end
@@ -65,4 +65,9 @@ class TestItems < Minitest::Test
     assert_equal self, item.repo
   end
 
+  def test_item_converts_string_to_time
+    item = Item.new({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :price => "5000", :merchant_id => "12334395", :creation_date => "2016-01-11 11:46:07 UTC", :last_updated => "1999-09-10 14:00:52 UTC"}, self)
+
+    assert_equal Time.utc(2016, 01, 11, 11, 46, 07), item.convert_time("2016-01-11 11:46:07 UTC")
+  end
 end
