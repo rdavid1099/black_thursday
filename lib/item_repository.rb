@@ -1,7 +1,10 @@
 class ItemRepository
+  attr_reader :pathname,
+              :sales_engine
 
-  def load_from_file(pathname)
-    pathname
+  def initialize(pathname, sales_engine)
+    @pathname = pathname
+    @sales_engine = sales_engine
   end
 
 end
