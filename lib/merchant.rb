@@ -6,10 +6,10 @@ class Merchant
               :repo
 
   def initialize(information, repo)
-    @id = information[0]
-    @name = information[1]
-    @creation_date = information[2]
-    @updated_date = information[3]
+    @id = information[:id]
+    @name = information[:name]
+    @creation_date = information[:creation_date]
+    @updated_date = information[:updated_date]
     @repo = repo
   end
 
