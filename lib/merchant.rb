@@ -8,11 +8,11 @@ class Merchant
   def initialize(information, repo)
     @id = information[:id]
     @name = information[:name]
-    @creation_date = information[:creation_date]
-    @updated_date = information[:updated_date]
+    @creation_date = information[:created_at]
+    @updated_date = information[:updated_at]
     @repo = repo
   end
-  
+
 
 
 
