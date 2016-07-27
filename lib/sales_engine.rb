@@ -1,6 +1,6 @@
 require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
-
+require 'pry'
 class SalesEngine
 
   def self.from_csv(pathnames)
@@ -19,4 +19,11 @@ class SalesEngine
     @merchants
   end
 
+  def self.find_items(id)
+    @items.find_all_by_merchant_id(id)
+  end
+
+  def self.find_merchant(id)
+    @merchants.find_by_id(id)
+  end
 end

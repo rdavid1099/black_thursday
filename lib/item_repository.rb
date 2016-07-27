@@ -59,6 +59,10 @@ class ItemRepository
     end
   end
 
+  def pass_id(id)
+    sales_engine.find_merchant(id)
+  end
+
   def inspect
 
   end

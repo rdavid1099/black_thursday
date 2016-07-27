@@ -13,8 +13,7 @@ class Merchant
     @repo = repo
   end
 
-
-
-
-
+  def items
+    repo.pass_id(id)
+  end
 end

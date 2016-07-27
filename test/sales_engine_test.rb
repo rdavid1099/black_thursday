@@ -46,4 +46,28 @@ class TestSalesEngine < Minitest::Test
     assert_instance_of Item, item
   end
 
+  def test_it_can_find_a_merchant_by_given_id_from_sales_engine
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv"})
+    mr = se.merchants
+    merchant = mr.find_by_id(12334478)
+
+    assert_equal 12334478, merchant.id
+  end
+
+  def test_it_can_use_data_in_item_class
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv"})
+    mr = se.merchants
+    merchant = se.merchants.find_by_id(12334478)
+
+    assert_instance_of Array, merchant.items
+    assert_equal "12334478", merchant.items[0].merchant_id
+  end
+
+  def test_it_can_use_item_data_in_merchant_class
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv"})
+    item = se.items.find_by_id(263421433)
+
+    assert_instance_of Merchant, item.merchant
+  end
+
 end
