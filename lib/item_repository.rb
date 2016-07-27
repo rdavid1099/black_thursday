@@ -1,4 +1,5 @@
-require './lib/item'
+require_relative '../lib/item'
+require 'csv'
 
 class ItemRepository
   attr_reader :pathname,
@@ -16,15 +17,15 @@ class ItemRepository
   end
 
   def generate_from_file
-    CSV.open(pathname).read.each do |data|
-      add_item(data)
+    contents = CSV.open pathname, headers: true, header_converters: :symbol
+    contents.each do |content|
+      add_item(content)
     end
   end
 
   def find_by_id(requested_id)
-    requested_id = requested_id.to_s unless requested_id.class == String
     all.find do |item|
-      item.id == requested_id
+      item.id == requested_id.to_s
     end
   end
 
@@ -40,4 +41,21 @@ class ItemRepository
     end
   end
 
+  def find_all_by_price(price)
+    all.find_all do |item|
+      item.unit_price_to_dollars == price.to_f
+    end
+  end
+
+  def find_all_by_price_in_range(range)
+    all.find_all do |item|
+      range.include?(item.unit_price_to_dollars.to_i)
+    end
+  end
+
+  def find_all_by_merchant_id(merchant_id)
+    all.find_all do |item|
+      item.merchant_id == merchant_id.to_s
+    end
+  end
 end
