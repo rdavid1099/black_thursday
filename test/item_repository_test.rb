@@ -214,6 +214,7 @@ class ItemRepositoryTest < Minitest::Test
 
     assert_equal "263420691", ir.find_by_name("fish hat").id
     assert_equal "263422571", ir.find_by_name("Vintage Album Loverboy, 1981, Get Lucky, Working For the Weekend, Its Your Life, very good condition, protection sleeve, art, wall art").id
+    assert_equal "263423449", ir.find_by_name("Täschchen 1980again &quot;Boat&quot;").id
   end
 
   def test_repo_finds_by_price_from_csv

@@ -64,10 +64,4 @@ class TestItems < Minitest::Test
 
     assert_equal self, item.repo
   end
-
-  def test_item_converts_string_to_time
-    item = Item.new({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at => "2016-01-11 11:46:07 UTC", :updated_at => "1999-09-10 14:00:52 UTC"}, self)
-
-    assert_equal Time.utc(2016, 01, 11, 11, 46, 07), item.convert_time("2016-01-11 11:46:07 UTC")
-  end
 end
