@@ -208,4 +208,42 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal "Fluffy", ir.find_by_id("263421633").name
   end
 
+  def test_repo_finds_by_name_from_file
+    ir = ItemRepository.new("./data/test_items.csv", self)
+    ir.generate_from_file
+
+    assert_equal "263420691", ir.find_by_name("fish hat").id
+    assert_equal "263422571", ir.find_by_name("Vintage Album Loverboy, 1981, Get Lucky, Working For the Weekend, Its Your Life, very good condition, protection sleeve, art, wall art").id
+  end
+
+  def test_repo_finds_by_price_from_csv
+    ir = ItemRepository.new("./data/test_items.csv", self)
+    ir.generate_from_file
+
+    assert_equal "263420691", ir.find_all_by_price(3000)[0].id
+    assert_equal "263422571", ir.find_all_by_price("1295")[0].id
+  end
+
+  def test_repo_finds_using_description_from_csv
+    ir = ItemRepository.new("./data/test_items.csv", self)
+    ir.generate_from_file
+
+    assert_equal "Test listing", ir.find_all_with_description("Test")[0].name
+    assert_equal "Una finestra aperta su Ischia", ir.find_all_with_description("che scatto")[0].name
+    assert_equal true, ir.find_all_with_description("the").length > 5
+  end
+
+  def test_find_all_in_price_range_works_with_csv
+    ir = ItemRepository.new("./data/test_items.csv", self)
+    ir.generate_from_file
+
+    assert_equal true, ir.find_all_by_price_in_range(Range.new(0,1000)).length > 1
+  end
+
+  def test_find_by_merchant_id_works_with_csv
+    ir = ItemRepository.new("./data/test_items.csv", self)
+    ir.generate_from_file
+
+    assert_equal "Taken By A Bearded Man", ir.find_all_by_merchant_id(12335541)[0].name
+  end
 end
