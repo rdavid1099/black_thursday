@@ -14,10 +14,10 @@ class Item
     @id = information[:id]
     @name = information[:name]
     @description = information[:description]
-    @unit_price = BigDecimal.new(information[:price],4)
+    @unit_price = BigDecimal.new(information[:unit_price],4)
     @merchant_id = information[:merchant_id]
-    @creation_date = convert_time(information[:creation_date])
-    @last_updated = convert_time(information[:last_updated])
+    @creation_date = convert_time(information[:created_at])
+    @last_updated = convert_time(information[:updated_at])
     @repo = repo
   end
 
