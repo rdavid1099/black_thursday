@@ -1,15 +1,15 @@
 class Merchant
   attr_reader :id,
               :name,
-              :creation_date,
-              :updated_date,
+              :created_at,
+              :updated_at,
               :repo
 
   def initialize(information, repo)
-    @id = information[:id]
+    @id = information[:id].to_i
     @name = information[:name]
-    @creation_date = information[:created_at]
-    @updated_date = information[:updated_at]
+    @created_at = Time.parse(information[:created_at])
+    @updated_at = Time.parse(information[:updated_at])
     @repo = repo
   end
 

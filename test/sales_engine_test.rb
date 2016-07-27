@@ -42,7 +42,7 @@ class TestSalesEngine < Minitest::Test
     ir = se.items
     item = ir.find_by_name("Test listing")
 
-    assert_equal "263410685", item.id
+    assert_equal 263410685, item.id
     assert_instance_of Item, item
   end
 

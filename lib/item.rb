@@ -6,18 +6,18 @@ class Item
               :description,
               :unit_price,
               :merchant_id,
-              :creation_date,
-              :last_updated,
+              :created_at,
+              :updated_at,
               :repo
 
   def initialize(information, repo)
-    @id = information[:id]
+    @id = information[:id].to_i
     @name = information[:name]
     @description = information[:description]
-    @unit_price = BigDecimal.new(information[:unit_price],4)
+    @unit_price = BigDecimal.new(information[:unit_price], 4)/100
     @merchant_id = information[:merchant_id]
-    @creation_date = Time.parse(information[:created_at])
-    @last_updated = Time.parse(information[:updated_at])
+    @created_at = Time.parse(information[:created_at])
+    @updated_at = Time.parse(information[:updated_at])
     @repo = repo
   end
 

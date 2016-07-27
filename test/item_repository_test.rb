@@ -40,7 +40,7 @@ class ItemRepositoryTest < Minitest::Test
     ir = ItemRepository.new("test", self)
     ir.add_item({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal "Grande toile", ir.find_by_id("263399749").name
+    assert_equal "Grande toile", ir.find_by_id(263399749).name
   end
 
   def test_repository_returns_nil_if_id_is_incorrect
@@ -71,15 +71,15 @@ class ItemRepositoryTest < Minitest::Test
     ir = ItemRepository.new("test", self)
     ir.add_item({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal "263399749", ir.find_by_name("Grande toile").id
+    assert_equal 263399749, ir.find_by_name("Grande toile").id
   end
 
   def test_item_repository_name_search_is_not_case_sensitive
     ir = ItemRepository.new("test", self)
     ir.add_item({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal "263399749", ir.find_by_name("grande toile").id
-    assert_equal "263399749", ir.find_by_name("gRaNdE ToIlE").id
+    assert_equal 263399749, ir.find_by_name("grande toile").id
+    assert_equal 263399749, ir.find_by_name("gRaNdE ToIlE").id
   end
 
   def test_item_repository_returns_empty_array_if_description_doesnt_match_items
@@ -123,7 +123,7 @@ class ItemRepositoryTest < Minitest::Test
     ir = ItemRepository.new("test", self)
     ir.add_item({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal "Grande toile", ir.find_all_by_price("5000")[0].name
+    assert_equal "Grande toile", ir.find_all_by_price("50.00")[0].name
   end
 
   def test_search_by_price_returns_empty_array_if_nothing_matches
@@ -139,14 +139,14 @@ class ItemRepositoryTest < Minitest::Test
     ir.add_item({:id => "263399748", :name => "Grand toilet", :description => "Crazy awesome environs.", :unit_price => "450", :merchant_id => "12334395", :created_at => "2016-01-11 11:46:07 UTC", :updated_at => "1999-09-10 14:00:52 UTC"})
     ir.add_item({:id => "263399747", :name => "Grande latte", :description => "Determine what environs are.", :unit_price => "5000", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal 2, ir.find_all_by_price("5000").length
+    assert_equal 2, ir.find_all_by_price("50.00").length
   end
 
   def test_search_by_price_can_take_integers
     ir = ItemRepository.new("test", self)
     ir.add_item({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal 1, ir.find_all_by_price(5000).length
+    assert_equal 1, ir.find_all_by_price(50).length
   end
 
   def test_repo_returns_empty_array_if_price_range_doesnt_match
@@ -155,7 +155,7 @@ class ItemRepositoryTest < Minitest::Test
     ir.add_item({:id => "263399748", :name => "Grand toilet", :description => "Crazy awesome environs.", :unit_price => "450", :merchant_id => "12334395", :created_at => "2016-01-11 11:46:07 UTC", :updated_at => "1999-09-10 14:00:52 UTC"})
     ir.add_item({:id => "263399747", :name => "Grande latte", :description => "Determine what environs are.", :unit_price => "5100", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal [], ir.find_all_by_price_in_range(Range.new(0,10))
+    assert_equal [], ir.find_all_by_price_in_range(Range.new(0,3))
   end
 
   def test_repo_finds_all_items_within_price_range
@@ -164,7 +164,7 @@ class ItemRepositoryTest < Minitest::Test
     ir.add_item({:id => "263399748", :name => "Grand toilet", :description => "Crazy awesome environs.", :unit_price => "450", :merchant_id => "12334395", :created_at => "2016-01-11 11:46:07 UTC", :updated_at => "1999-09-10 14:00:52 UTC"})
     ir.add_item({:id => "263399747", :name => "Grande latte", :description => "Determine what environs are.", :unit_price => "5100", :merchant_id => "12334395", :created_at  => "2016-01-11 11:46:07 UTC", :updated_at  => "1999-09-10 14:00:52 UTC"})
 
-    assert_equal 2, ir.find_all_by_price_in_range(Range.new(5000,5500)).length
+    assert_equal 2, ir.find_all_by_price_in_range(Range.new(50.00,55.00)).length
   end
 
   def test_repo_returns_empty_array_if_merchant_id_doesnt_exist
@@ -212,17 +212,17 @@ class ItemRepositoryTest < Minitest::Test
     ir = ItemRepository.new("./data/test_items.csv", self)
     ir.generate_from_file
 
-    assert_equal "263420691", ir.find_by_name("fish hat").id
-    assert_equal "263422571", ir.find_by_name("Vintage Album Loverboy, 1981, Get Lucky, Working For the Weekend, Its Your Life, very good condition, protection sleeve, art, wall art").id
-    assert_equal "263423449", ir.find_by_name("Täschchen 1980again &quot;Boat&quot;").id
+    assert_equal 263420691, ir.find_by_name("fish hat").id
+    assert_equal 263422571, ir.find_by_name("Vintage Album Loverboy, 1981, Get Lucky, Working For the Weekend, Its Your Life, very good condition, protection sleeve, art, wall art").id
+    assert_equal 263423449, ir.find_by_name("Täschchen 1980again &quot;Boat&quot;").id
   end
 
   def test_repo_finds_by_price_from_csv
     ir = ItemRepository.new("./data/test_items.csv", self)
     ir.generate_from_file
 
-    assert_equal "263420691", ir.find_all_by_price(3000)[0].id
-    assert_equal "263422571", ir.find_all_by_price("1295")[0].id
+    assert_equal 263420691, ir.find_all_by_price(30.00)[0].id
+    assert_equal 263422571, ir.find_all_by_price("12.95")[0].id
   end
 
   def test_repo_finds_using_description_from_csv
