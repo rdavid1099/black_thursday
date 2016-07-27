@@ -1,7 +1,22 @@
-module SalesEngine
+require_relative '../lib/merchant_repository'
+require_relative '../lib/item_repository'
 
-  def self.from_csv(pathname)
-    @items = ItemRepository.new(pathname, )
+class SalesEngine
+
+  def self.from_csv(pathnames)
+    @items = ItemRepository.new(pathnames[:items], self)
+    @items.generate_from_file
+    @merchants = MerchantRepository.new(pathnames[:merchants], self)
+    @merchants.generate_from_file
+    self
+  end
+
+  def self.items
+    @items
+  end
+
+  def self.merchants
+    @merchants
   end
 
 end
