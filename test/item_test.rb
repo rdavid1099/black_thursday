@@ -32,7 +32,7 @@ class TestItems < Minitest::Test
 
   def test_item_knows_merchant_id
     item = Item.new({:id => "263399749", :name => "Grande toile", :description => "Acrylique sur toile, mesurant environs 80/50cm.", :unit_price => "5000", :merchant_id => "12334395", :created_at => "2016-01-11 11:46:07 UTC", :updated_at => "1999-09-10 14:00:52 UTC"}, self)
-    merchant_id = "12334395"
+    merchant_id = 12334395
 
     assert_equal merchant_id, item.merchant_id
   end

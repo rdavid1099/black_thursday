@@ -80,10 +80,4 @@ class TestMerchantRepository < Minitest::Test
     assert_equal 0, mr.find_all_by_name("zxy").length
     assert_equal 1, mr.find_all_by_name("poop").length
   end
-
-  def test_repository_can_pass_merchant_id_to_engine
-    mr = MerchantRepository.new("./data/test_merchants.csv", SalesEngine.new)
-
-    assert mr.pass_id(10)
-  end
 end

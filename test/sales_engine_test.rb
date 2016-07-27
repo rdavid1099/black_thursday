@@ -60,7 +60,7 @@ class TestSalesEngine < Minitest::Test
     merchant = se.merchants.find_by_id(12334478)
 
     assert_instance_of Array, merchant.items
-    assert_equal "12334478", merchant.items[0].merchant_id
+    assert_equal 12334478, merchant.items[0].merchant_id
   end
 
   def test_it_can_use_item_data_in_merchant_class

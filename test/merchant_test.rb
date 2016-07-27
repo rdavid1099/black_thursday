@@ -36,11 +36,4 @@ class TestMerchant < Minitest::Test
 
     assert_equal self, merchant.repo
   end
-
-  def test_items_returns_value_of_self
-    merchant = Merchant.new({:id => "12334105", :name => "Shopin1901", :created_at => "2010-12-10", :updated_at => "2011-12-04"}, self)
-
-    assert_equal self, merchant.items
-  end
-
 end

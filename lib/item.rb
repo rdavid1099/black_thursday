@@ -15,7 +15,7 @@ class Item
     @name = information[:name]
     @description = information[:description]
     @unit_price = BigDecimal.new(information[:unit_price], 4)/100
-    @merchant_id = information[:merchant_id]
+    @merchant_id = information[:merchant_id].to_i
     @created_at = Time.parse(information[:created_at])
     @updated_at = Time.parse(information[:updated_at])
     @repo = repo
@@ -29,5 +29,5 @@ class Item
     repo.pass_id(merchant_id)
   end
 
-  
+
 end
