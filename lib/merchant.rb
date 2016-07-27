@@ -12,6 +12,7 @@ class Merchant
     @updated_date = information[:updated_date]
     @repo = repo
   end
+  
 
 
 
