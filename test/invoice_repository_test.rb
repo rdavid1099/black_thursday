@@ -34,4 +34,60 @@ class InvoiceRepositoryTest < Minitest::Test
      invoice_one = {:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}
      ir.add_invoice(invoice_one)
 
+     assert_equal 29, ir.find_by_id(29).id
+   end
+
+   def test_find_by_id_returns_nil_when_id_doesnt_match
+     ir = InvoiceRepository.new("path", self)
+     invoice_one = {:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}
+     ir.add_invoice(invoice_one)
+
+     assert_equal nil, ir.find_by_id(2990432)
+   end
+
+   def test_it_can_find_one_or_more_matches_which_have_matching_customer_id
+     ir = InvoiceRepository.new("path", self)
+     invoice_one = {:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}
+     invoice_two = {:id => "30",:customer_id => "7",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     ir.add_invoice(invoice_one)
+     ir.add_invoice(invoice_two)
+
+     assert_equal 2, ir.find_all_by_customer_id(7).length
+   end
+
+   def test_it_can_find_one_or_more_matches_which_have_matching_customer_id
+     ir = InvoiceRepository.new("path", self)
+     invoice_one = {:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}
+     invoice_two = {:id => "30",:customer_id => "8",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     invoice_three = {:id => "77",:customer_id => "7",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     ir.add_invoice(invoice_one)
+     ir.add_invoice(invoice_two)
+     ir.add_invoice(invoice_three)
+
+     assert_equal 1, ir.find_all_by_customer_id(8).count
+   end
+
+   def test_it_can_find_one_or_more_matches_which_have_matching_merchant_id
+     ir = InvoiceRepository.new("path", self)
+     invoice_one = {:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}
+     invoice_two = {:id => "30",:customer_id => "8",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     invoice_three = {:id => "77",:customer_id => "7",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     ir.add_invoice(invoice_one)
+     ir.add_invoice(invoice_two)
+     ir.add_invoice(invoice_three)
+
+     assert_equal 1, ir.find_all_by_merchant_id(12334861).count
+   end
+
+   def test_it_can_find_one_or_more_matches_which_have_a_matching_status
+     ir = InvoiceRepository.new("path", self)
+     invoice_one = {:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}
+     invoice_two = {:id => "30",:customer_id => "8",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     invoice_three = {:id => "77",:customer_id => "7",:merchant_id => "12334208",:status => "pending", :created_at => "2001-11-24", :updated_at => "2009-11-13"}
+     ir.add_invoice(invoice_one)
+     ir.add_invoice(invoice_two)
+     ir.add_invoice(invoice_three)
+
+     assert_equal 2, ir.find_all_by_status("pending").count
+   end
 end
