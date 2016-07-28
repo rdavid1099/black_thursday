@@ -18,8 +18,7 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    binding.pry
-    Math.sqrt(difference_of_merchant_items_and_average / 2)
+    Math.sqrt(difference_of_merchant_items_and_average / total_num_of_merchants - 1)
   end
 
   def difference_of_merchant_items_and_average

@@ -53,6 +53,12 @@ class TestSalesAnalyst < Minitest::Test
     sa = SalesAnalyst.new(se)
 
     assert_instance_of Float, sa.average_items_per_merchant_standard_deviation
-    assert_equal 1, sa.average_items_per_merchant_standard_deviation
+  end
+
+  def test_analyst_returns_array_of_merchants_with_the_most_items_for_sale
+    se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv"})
+    sa = SalesAnalyst.new(se)
+
+    
   end
 end
