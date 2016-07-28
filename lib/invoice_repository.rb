@@ -1,4 +1,5 @@
 require 'csv'
+require_relative '../lib/invoice'
 
 class InvoiceRepository
 

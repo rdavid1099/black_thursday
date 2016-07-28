@@ -18,6 +18,7 @@ class Item
     @merchant_id = information[:merchant_id].to_i
     @created_at = Time.parse(information[:created_at])
     @updated_at = Time.parse(information[:updated_at])
+    @path = {:type => "item"}
     @repo = repo
   end
 
@@ -26,7 +27,8 @@ class Item
   end
 
   def merchant
-    repo.pass_id(merchant_id)
+    @path[:destination] = "merchants"
+    repo.pass_id(merchant_id, @path)
   end
 
 

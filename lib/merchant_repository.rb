@@ -41,8 +41,8 @@ class MerchantRepository
     end
   end
 
-  def pass_id(id)
-    sales_engine.find_items(id)
+  def pass_id(id, path)
+    sales_engine.id_parser(id, path)
   end
 
   def inspect

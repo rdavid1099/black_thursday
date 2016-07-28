@@ -71,11 +71,18 @@ class TestSalesEngine < Minitest::Test
   end
 
   def test_instance_of_invoice_can_be_assigned_to_a_variable
-    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv"})
-    mr = se.merchants
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv"})
+    inv = se.invoices
 
-    assert_instance_of MerchantRepository, mr
+    assert_instance_of InvoiceRepository, inv
   end
 
+  def test_merchant_returns_array_of_related_invoices
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv"})
+    mr = se.merchants
+    merchant = se.merchants.find_by_id(12334478)
+
+    assert_instance_of Array, merchant.invoices
+  end
 
 end

@@ -10,10 +10,17 @@ class Merchant
     @name = information[:name]
     @created_at = Time.parse(information[:created_at])
     @updated_at = Time.parse(information[:updated_at])
+    @path = {:type => "merchant"}
     @repo = repo
   end
 
   def items
-    repo.pass_id(id)
+    @path[:destination] = "items"
+    repo.pass_id(id, @path)
+  end
+
+  def invoices
+    @path[:destination] = "invoices"
+    repo.pass_id(id, @path)
   end
 end
