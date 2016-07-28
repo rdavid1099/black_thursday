@@ -85,4 +85,11 @@ class TestSalesEngine < Minitest::Test
     assert_instance_of Array, merchant.invoices
   end
 
+  def test_invoice_returns_array_of_related_merchants
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv"})
+    inv = se.invoices.find_by_id(1099)
+
+    assert_equal "Hollipoop", inv.merchant.name
+  end
+
 end

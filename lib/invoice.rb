@@ -4,7 +4,8 @@ class Invoice
                :merchant_id,
                :status,
                :created_at,
-               :updated_at
+               :updated_at,
+               :repo
 
     def initialize(information, repo)
       @id = information[:id].to_i
@@ -13,7 +14,13 @@ class Invoice
       @status = information[:status]
       @created_at = Time.parse(information[:created_at])
       @updated_at = Time.parse(information[:updated_at])
+      @path = {:type => "invoice"}
+      @repo = repo
     end
- 
+
+    def merchant
+      @path[:destination] = "merchants"
+      repo.pass_id(merchant_id, @path)
+    end
 
 end

@@ -45,6 +45,7 @@ class SalesEngine
   def self.id_parser(id, path)
     return merchant_searching(id, path[:destination]) if path[:type] == "merchant"
     return item_searching(id, path[:destination]) if path[:type] == "item"
+    return invoice_searching(id, path[:destination]) if path[:type] == "invoice"
   end
 
   def self.merchant_searching(id, search_type)
@@ -53,6 +54,10 @@ class SalesEngine
   end
 
   def self.item_searching(id, search_type)
+    return @merchants.find_by_id(id) if search_type == "merchants"
+  end
+
+  def self.invoice_searching(id, search_type)
     return @merchants.find_by_id(id) if search_type == "merchants"
   end
 end
