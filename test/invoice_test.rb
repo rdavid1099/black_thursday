@@ -2,23 +2,52 @@ require './test/test_helper'
 require './lib/invoice'
 
 class InvoiceTest < Minitest::Test
-# customer_id - returns the customer id
-# merchant_id - returns the merchant id
-# status - returns the status
-# created_at - returns a Time instance for the date the item was first created
-# updated_at - returns a Time instance for the date the item was last modified
+
+  def test_invoice_can_receive_a_hash_and_self
+    invoice = Invoice.new({:status => "fruit", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+
+    assert_equal "fruit", invoice.status
+  end
 
   def test_it_returns_an_integer_id
-    invoice = Invoice.new({:id => "12334105", :name => "Shopin1901", :created_at => "2010-12-10", :updated_at => "2011-12-04"})
-    id = 12334105
+    invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+    id = 29
 
     assert_equal id, invoice.id
   end
 
   def test_it_returns_the_customer_id
-    invoice = Invoice.new({:id => "12334105", :name => "Shopin1901", :created_at => "2010-12-10", :updated_at => "2011-12-04"})
-    customer_id = "Shopin1901"
+    invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+    customer_id = 7
 
     assert_equal customer_id, invoice.customer_id
   end
+
+  def test_it_returns_the_merchant_id
+    invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+    merchant_id = 12334861
+
+    assert_equal merchant_id, invoice.merchant_id
+  end
+
+  def test_it_returns_the_status
+    invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+    status= "shipped"
+
+    assert_equal status, invoice.status
+  end
+
+  def test_it_returns_a_Time_instance_for_the_date_the_item_was_first_created
+    invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+
+    assert_instance_of Time, invoice.created_at
+    assert_equal Time.parse("2008-09-21"), invoice.created_at
+  end
+
+  def test_it_returns_a_time_instance_for_the_date_the_item_was_last_modified
+    invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+
+    assert_instance_of Time, invoice.updated_at
+  end
+
 end
