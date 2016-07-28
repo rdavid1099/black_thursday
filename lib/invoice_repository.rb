@@ -1,3 +1,5 @@
+require 'csv'
+
 class InvoiceRepository
 
   attr_reader :pathname,
@@ -12,6 +14,13 @@ class InvoiceRepository
 
   def add_invoice(data)
     all << Invoice.new(data, self)
+  end
+
+  def generate_from_file
+    contents = CSV.open pathname, headers: true, header_converters: :symbol
+    contents.each do |content|
+      add_invoice(content)
+    end
   end
 
   def find_by_id(id)

@@ -90,4 +90,11 @@ class InvoiceRepositoryTest < Minitest::Test
 
      assert_equal 2, ir.find_all_by_status("pending").count
    end
+
+   def test_invoice_repository_can_read_csv_files
+     ir = InvoiceRepository.new("./data/test_invoices.csv", self)
+     ir.generate_from_file
+
+     assert_equal true, ir.all.length > 40
+   end
 end
