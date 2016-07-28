@@ -2,6 +2,7 @@ require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
 require_relative '../lib/invoice_repository'
 require 'pry'
+
 class SalesEngine
 
   def self.from_csv(pathnames)
