@@ -44,8 +44,8 @@ class TestSalesAnalyst < Minitest::Test
   def test_sales_analyst_calculates_average_amount_of_items_per_merchant
     sa = SalesAnalyst.new(@se)
 
-    assert_instance_of Float, sa.average_items_per_merchants
-    assert_equal false, sa.average_items_per_merchants < 1
+    assert_instance_of Float, sa.average_items_per_merchant
+    assert_equal false, sa.average_items_per_merchant < 1
   end
 
   def test_sales_analyst_calculates_standard_deviation_of_average
