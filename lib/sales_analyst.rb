@@ -18,7 +18,7 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    Math.sqrt(sum_of_merchant_items_average / total_num_of_merchants).round(2)
+    Math.sqrt(sum_of_merchant_items_average / (total_num_of_merchants - 1)).round(2)
   end
 
   def sum_of_merchant_items_average
@@ -76,7 +76,7 @@ class SalesAnalyst
   end
 
   def average_price_per_merchant_standard_deviation
-    Math.sqrt(sum_of_item_price_differences / total_num_of_items)
+    Math.sqrt(sum_of_item_price_differences / (total_num_of_items - 1))
   end
 
   def sum_of_item_price_differences
