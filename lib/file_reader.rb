@@ -1,3 +1,5 @@
+require 'csv'
+
 module FileReader
 
   def generate_from_file(pathname, repo)

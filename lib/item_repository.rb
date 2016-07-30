@@ -1,6 +1,5 @@
 require_relative '../lib/item'
 require_relative '../lib/file_reader'
-require 'csv'
 
 class ItemRepository
   include FileReader

@@ -1,6 +1,5 @@
 require_relative '../lib/invoice'
 require_relative '../lib/file_reader'
-require 'csv'
 
 class InvoiceRepository
   include FileReader
