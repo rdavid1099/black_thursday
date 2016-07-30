@@ -21,4 +21,8 @@ module MathEngine
     avg + (std_dev * amount)
   end
 
+  def below_std_dev(avg, std_dev, amount = 1)
+    avg - (std_dev * amount)
+  end
+
 end
