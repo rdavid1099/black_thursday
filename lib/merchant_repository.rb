@@ -1,26 +1,21 @@
 require_relative '../lib/merchant'
+require_relative '../lib/file_reader'
 require 'csv'
 
 class MerchantRepository
-    attr_reader  :all,
-                 :sales_engine,
-                 :pathname
+  include FileReader
+
+  attr_reader  :all,
+               :sales_engine
 
   def initialize(pathname, sales_engine)
-    @all = Array.new
     @sales_engine = sales_engine
-    @pathname = pathname
+    @all = Array.new
+    generate_from_file(pathname, self) if pathname.to_s[-4..-1] == ".csv"
   end
 
-  def add_merchant(data)
+  def add_data(data)
     @all << Merchant.new(data, self)
-  end
-
-  def generate_from_file
-    contents = CSV.open pathname, headers: true, header_converters: :symbol
-    contents.each do |content|
-      add_merchant(content)
-    end
   end
 
   def find_by_id(id)

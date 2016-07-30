@@ -1,4 +1,8 @@
+require_relative '../lib/math_engine'
+
 class SalesAnalyst
+  include MathEngine
+
   attr_reader :sales_engine,
               :total_num_of_items,
               :total_num_of_merchants,
@@ -14,18 +18,15 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    (num_of_merchants_items.reduce(:+) / num_of_merchants_items.length.to_f).round(2)
+    find_average(num_of_merchants_items).round(2)
   end
 
   def average_items_per_merchant_standard_deviation
-    Math.sqrt(sum_of_merchant_items_average / (total_num_of_merchants - 1)).round(2)
-  end
-
-  def sum_of_merchant_items_average
-    num_of_merchants_items.reduce(0) do |result, number|
-      result += ((number - average_items_per_merchant)**2)
-      result
-    end
+    standard_deviation(
+      num_of_merchants_items,
+      average_items_per_merchant,
+      total_num_of_merchants
+    )
   end
 
   def generate_total_items_of_each_merchant
@@ -46,7 +47,14 @@ class SalesAnalyst
   end
 
   def merchants_with_high_item_count
-    target = average_items_per_merchant_standard_deviation + average_items_per_merchant
+    target = above_std_dev(
+      average_items_per_merchant,
+      average_items_per_merchant_standard_deviation
+    )
+    find_merchants_with_high_item_count(target)
+  end
+
+  def find_merchants_with_high_item_count(target)
     sales_engine.merchants.all.find_all do |merchant|
       merchant.items.length > target
     end
@@ -61,28 +69,33 @@ class SalesAnalyst
     item_prices = items.map do |item|
       item.unit_price
     end
-    item_prices.reduce(:+) / items.length
+    find_average(item_prices)
   end
 
   def average_average_price_per_merchant
-    (average_item_price_for_merch.reduce(:+) / sales_engine.merchants.all.length).round(2)
+    find_average(average_item_price_for_merch).round(2)
   end
 
   def golden_items
-    target = average_average_price_per_merchant + (average_price_per_merchant_standard_deviation * 2)
+    target = above_std_dev(
+      average_average_price_per_merchant,
+      average_price_per_merchant_standard_deviation,
+      2
+    )
+    find_golden_items(target)
+  end
+
+  def find_golden_items(target)
     sales_engine.items.all.find_all do |item|
       item.unit_price_to_dollars > target
     end
   end
 
   def average_price_per_merchant_standard_deviation
-    Math.sqrt(sum_of_item_price_differences / (total_num_of_items - 1))
-  end
-
-  def sum_of_item_price_differences
-    average_item_price_for_merch.reduce(0) do |result, number|
-      result += ((number - average_average_price_per_merchant)**2)
-      result
-    end
+    standard_deviation(
+      average_item_price_for_merch,
+      average_average_price_per_merchant,
+      total_num_of_items
+    )
   end
 end
