@@ -11,7 +11,7 @@ class ItemRepository
   def initialize(pathname, sales_engine)
     @sales_engine = sales_engine
     @all = Array.new
-    generate_from_file(pathname, self) if pathname[-4..-1] == ".csv"
+    generate_from_file(pathname, self) if pathname.to_s[-4..-1] == ".csv"
   end
 
   def add_data(data)

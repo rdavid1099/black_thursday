@@ -1,34 +1,14 @@
 require_relative '../lib/merchant_repository'
 require_relative '../lib/item_repository'
 require_relative '../lib/invoice_repository'
-require 'pry'
 
 class SalesEngine
 
   def self.from_csv(pathnames)
-    generate_repositories(pathnames)
+    @items = ItemRepository.new(pathnames[:items], self)
+    @merchants = MerchantRepository.new(pathnames[:merchants], self)
+    @invoices = InvoiceRepository.new(pathnames[:invoices], self)
     self
-  end
-
-  def self.generate_repositories(pathnames)
-    activate_items_repo(pathnames[:items]) unless pathnames[:items].nil?
-    activate_merchants_repo(pathnames[:merchants]) unless pathnames[:merchants].nil?
-    activate_invoices_repo(pathnames[:invoices]) unless pathnames[:invoices].nil?
-  end
-
-  def self.activate_items_repo(pathname)
-    @items = ItemRepository.new(pathname, self)
-    @items.generate_from_file
-  end
-
-  def self.activate_merchants_repo(pathname)
-    @merchants = MerchantRepository.new(pathname, self)
-    @merchants.generate_from_file
-  end
-
-  def self.activate_invoices_repo(pathname)
-    @invoices = InvoiceRepository.new(pathname, self)
-    @invoices.generate_from_file
   end
 
   def self.items
