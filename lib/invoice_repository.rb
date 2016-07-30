@@ -1,27 +1,21 @@
-require 'csv'
 require_relative '../lib/invoice'
+require_relative '../lib/file_reader'
+require 'csv'
 
 class InvoiceRepository
+  include FileReader
 
-  attr_reader :pathname,
-              :sales_engine,
+  attr_reader :sales_engine,
               :all
 
   def initialize(pathname,sales_engine)
-    @pathname = pathname
     @sales_engine = sales_engine
-    @all = []
+    @all = Array.new
+    generate_from_file(pathname, self) if pathname[-4..-1] == ".csv"
   end
 
-  def add_invoice(data)
+  def add_data(data)
     all << Invoice.new(data, self)
-  end
-
-  def generate_from_file
-    contents = CSV.open pathname, headers: true, header_converters: :symbol
-    contents.each do |content|
-      add_invoice(content)
-    end
   end
 
   def find_by_id(id)

@@ -1,26 +1,21 @@
 require_relative '../lib/item'
+require_relative '../lib/file_reader'
 require 'csv'
 
 class ItemRepository
-  attr_reader :pathname,
-              :sales_engine,
+  include FileReader
+
+  attr_reader :sales_engine,
               :all
 
   def initialize(pathname, sales_engine)
-    @pathname = pathname
     @sales_engine = sales_engine
     @all = Array.new
+    generate_from_file(pathname, self) if pathname[-4..-1] == ".csv"
   end
 
-  def add_item(data)
+  def add_data(data)
     @all << Item.new(data, self)
-  end
-
-  def generate_from_file
-    contents = CSV.open pathname, headers: true, header_converters: :symbol
-    contents.each do |content|
-      add_item(content)
-    end
   end
 
   def find_by_id(requested_id)
@@ -64,6 +59,5 @@ class ItemRepository
   end
 
   def inspect
-
   end
 end
