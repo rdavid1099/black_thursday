@@ -51,7 +51,7 @@ class InvoiceItemTest < Minitest::Test
 
   def test_item_converts_price_to_dollars_as_float
     ii = InvoiceItem.new({:id =>"1",:item_id => "263519844",:invoice_id => "1",:quantity => "5",:unit_price => "13635",:created_at => "2012-03-27",:updated_at => "2012-03-27"}, self)
-    converted_to_dollars = 13635
+    converted_to_dollars = 136.35
 
     assert_equal converted_to_dollars, ii.unit_price_to_dollars
   end

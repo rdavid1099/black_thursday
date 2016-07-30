@@ -19,7 +19,7 @@ class InvoiceItem
     @quantity = information[:quantity]
     @created_at = Time.parse(information[:created_at])
     @updated_at = Time.parse(information[:updated_at])
-    @unit_price = BigDecimal.new(information[:unit_price], 4)
+    @unit_price = BigDecimal.new(information[:unit_price], 4)/100
     @repo = repo
   end
 
