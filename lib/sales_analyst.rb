@@ -15,7 +15,7 @@ class SalesAnalyst
     @sales_engine = sales_engine
     @total_num_of_items = sales_engine.items.all.length
     @total_num_of_merchants = sales_engine.merchants.all.length
-    @total_num_of_invoices = sales_engine.merchants.all.length
+    @total_num_of_invoices = sales_engine.invoices.all.length
     @num_of_merchants_items = generate_total_items_of_each_merchant
     @num_of_merchants_invoices = generate_total_invoices_of_each_merchant
     @average_item_price_for_merch = generate_item_price_per_merch
@@ -70,7 +70,7 @@ class SalesAnalyst
     standard_deviation(
     num_of_merchants_invoices,
     average_invoices_per_merchant,
-    total_num_of_invoices
+    total_num_of_merchants
     )
   end
 
@@ -78,7 +78,7 @@ class SalesAnalyst
     standard_deviation(
     split_invoices_by_creation_date,
     average_invoices_created_per_day,
-    total_num_of_invoices
+    7
     )
   end
 
@@ -127,8 +127,16 @@ class SalesAnalyst
   end
 
   def invoice_status(status)
-    
+    (
+    (count_of_matched_invoice_status(status) / total_num_of_invoices.to_f) * 100
+    ).round(2)
+  end
 
+  def count_of_matched_invoice_status(status)
+    sales_engine.invoices.all.reduce(0) do |result, invoice|
+      result += 1 if invoice.status == status
+      result
+    end
   end
 # sa.invoice_status(:pending) # => 5.25
 # sa.invoice_status(:shipped) # => 93.75
