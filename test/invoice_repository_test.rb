@@ -82,7 +82,7 @@ class InvoiceRepositoryTest < Minitest::Test
      ir.add_data(invoice_two)
      ir.add_data(invoice_three)
 
-     assert_equal 2, ir.find_all_by_status("pending").count
+     assert_equal 2, ir.find_all_by_status(:pending).count
    end
 
    def test_invoice_repository_can_read_csv_files
