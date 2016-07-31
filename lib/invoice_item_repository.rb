@@ -32,5 +32,4 @@ class InvoiceItemRepository
     end
   end
 
-
 end

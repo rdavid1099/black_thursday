@@ -28,7 +28,6 @@ class TestInvoiceItemRepository < Minitest::Test
     iir.add_data({:id => "1", :item_id => "263519844", :invoice_id => "1", :quantity => "5", :unit_price => "13635", :created_at => "2012-03-27 14:54:09 UTC", :updated_at => "2012-03-27 14:54:09 UTC"})
     iir.add_data({:id => "2", :item_id => "263454779", :invoice_id => "1", :quantity => "9", :unit_price => "23324", :created_at => "2012-03-27 14:54:09 UTC", :updated_at => "2012-03-27 14:54:09 UTC"})
 
-
     assert_equal 2, iir.all.length
   end
 
