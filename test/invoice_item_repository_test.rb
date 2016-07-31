@@ -79,4 +79,10 @@ class TestInvoiceItemRepository < Minitest::Test
     assert_equal [], iir.find_all_by_invoice_id("004")
   end
 
+  def test_it_loads_data_from_csv_file
+    iir = InvoiceItemRepository.new("./data/test_invoice_items.csv", self)
+
+    assert_equal 20, iir.all.length
+  end
+
 end

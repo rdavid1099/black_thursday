@@ -195,32 +195,28 @@ class ItemRepositoryTest < Minitest::Test
   def test_find_by_id_works_generated_from_file
     ir = ItemRepository.new("./data/test_items.csv", self)
 
-    assert_equal "Test listing", ir.find_by_id("263410685").name
-    assert_equal "wooden finger protection", ir.find_by_id("263411677").name
-    assert_equal "Fluffy", ir.find_by_id("263421633").name
+    assert_equal 50, ir.find_by_name("Test Item").id
   end
 
   def test_repo_finds_by_name_from_file
     ir = ItemRepository.new("./data/test_items.csv", self)
 
-    assert_equal 263420691, ir.find_by_name("fish hat").id
-    assert_equal 263422571, ir.find_by_name("Vintage Album Loverboy, 1981, Get Lucky, Working For the Weekend, Its Your Life, very good condition, protection sleeve, art, wall art").id
-    assert_equal 263423449, ir.find_by_name("Täschchen 1980again &quot;Boat&quot;").id
+    assert_equal 50, ir.find_by_name("Test Item").id
   end
 
   def test_repo_finds_by_price_from_csv
     ir = ItemRepository.new("./data/test_items.csv", self)
 
-    assert_equal 263420691, ir.find_all_by_price(30.00)[0].id
-    assert_equal 263422571, ir.find_all_by_price("12.95")[0].id
+    assert_equal 50, ir.find_all_by_price(123.00)[0].id
+    assert_equal 66, ir.find_all_by_price("904.35")[0].id
   end
 
   def test_repo_finds_using_description_from_csv
     ir = ItemRepository.new("./data/test_items.csv", self)
 
-    assert_equal "Test listing", ir.find_all_with_description("Test")[0].name
-    assert_equal "Una finestra aperta su Ischia", ir.find_all_with_description("che scatto")[0].name
-    assert_equal true, ir.find_all_with_description("the").length > 5
+    assert_equal "Test Item", ir.find_all_with_description("Test")[0].name
+    assert_equal "Test Item", ir.find_all_with_description("is a")[0].name
+    assert_equal true, ir.find_all_with_description("this").length > 5
   end
 
   def test_find_all_in_price_range_works_with_csv
@@ -232,6 +228,6 @@ class ItemRepositoryTest < Minitest::Test
   def test_find_by_merchant_id_works_with_csv
     ir = ItemRepository.new("./data/test_items.csv", self)
 
-    assert_equal "Taken By A Bearded Man", ir.find_all_by_merchant_id(12335541)[0].name
+    assert_equal "Test Item", ir.find_all_by_merchant_id(10)[0].name
   end
 end

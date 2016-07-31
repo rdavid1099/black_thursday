@@ -88,6 +88,6 @@ class InvoiceRepositoryTest < Minitest::Test
    def test_invoice_repository_can_read_csv_files
      ir = InvoiceRepository.new("./data/test_invoices.csv", self)
 
-     assert_equal true, ir.all.length > 40
+     assert_equal 20, ir.all.length
    end
 end

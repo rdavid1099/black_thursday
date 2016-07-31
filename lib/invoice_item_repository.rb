@@ -1,4 +1,5 @@
 require_relative '../lib/invoice_item'
+require_relative '../lib/file_reader'
 
 class InvoiceItemRepository
   include FileReader
