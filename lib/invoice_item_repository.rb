@@ -1,16 +1,27 @@
 require_relative '../lib/invoice_item'
+<<<<<<< HEAD
 require_relative '../lib/file_reader'
 
 class InvoiceItemRepository
   include FileReader
+=======
+
+class InvoiceItemRepository
+>>>>>>> e6999bec21770bc327dd14d26f2c7ad36570c611
 
   attr_reader :sales_engine,
               :all
 
+<<<<<<< HEAD
   def initialize(pathname, sales_engine)
     @sales_engine = sales_engine
     @all = Array.new
     generate_from_file(pathname, self) if pathname.to_s[-4..-1] == ".csv"
+=======
+  def initialize(information, sales_engine)
+    @sales_engine = sales_engine
+    @all = Array.new
+>>>>>>> e6999bec21770bc327dd14d26f2c7ad36570c611
   end
 
   def add_data(data)

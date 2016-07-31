@@ -84,5 +84,4 @@ class TestInvoiceItemRepository < Minitest::Test
 
     assert_equal 20, iir.all.length
   end
-
 end
