@@ -92,4 +92,59 @@ class TestSalesEngine < Minitest::Test
     assert_equal "Mr. Test", inv.merchant.name
   end
 
+  def test_engine_loads_transaction_repo
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv"})
+
+    assert_equal 20, se.transactions.all.length
+  end
+
+  def test_engine_loads_customer_repo
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+
+    assert_equal 20, se.customers.all.length
+  end
+
+  def test_engine_links_invoices_to_others
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+    invoice = se.invoices.find_by_id(10)
+
+    assert_instance_of Array, invoice.items
+    assert_instance_of Array, invoice.transactions
+    assert_instance_of Customer, invoice.customer
+  end
+
+  def test_engine_links_transactions_to_others
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+    transaction = se.transactions.find_by_id(10)
+
+    assert_instance_of Invoice, transaction.invoice
+  end
+
+  def test_engine_links_merchants_to_customers
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+    merchant = se.merchants.find_by_id(10)
+
+    assert_instance_of Array, merchant.customers
+    assert_instance_of Customer, merchant.customers[0]
+  end
+
+  def test_engine_links_customers_to_merchants
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+    customer = se.customers.find_by_id(12)
+
+    assert_instance_of Array, customer.merchants
+    assert_instance_of Merchant, customer.merchants[0]
+  end
 end

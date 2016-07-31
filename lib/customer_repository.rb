@@ -11,6 +11,7 @@ class CustomerRepository
   def initialize(pathname, sales_engine)
     @sales_engine = sales_engine
     @all = Array.new
+    generate_from_file(pathname, self) if pathname.to_s[-4..-1] == ".csv"
   end
 
   def add_data(data)
@@ -23,20 +24,20 @@ class CustomerRepository
     end
   end
 
-def find_all_by_first_name(search)
-  all.find_all do |customer|
-    customer.first_name.to_s.include? search
+  def find_all_by_first_name(search)
+    all.find_all do |customer|
+      customer.first_name.to_s.include? search
+    end
   end
-end
 
-def find_all_by_last_name(search)
-  all.find_all do |customer|
-    customer.last_name.to_s.include? search
+  def find_all_by_last_name(search)
+    all.find_all do |customer|
+      customer.last_name.to_s.include? search
+    end
   end
-end
 
-def pass_id(id, path)
-  sales_engine.id_parser(id, path)
-end
+  def pass_id(id, path)
+    sales_engine.id_parser(id, path)
+  end
 
 end

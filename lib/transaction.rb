@@ -5,7 +5,8 @@ attr_reader :id,
             :credit_card_expiration_date,
             :result,
             :created_at,
-            :updated_at
+            :updated_at,
+            :repo
 
   def initialize(information, repo)
     @id = information[:id].to_i
@@ -15,7 +16,12 @@ attr_reader :id,
     @result = information[:result]
     @created_at = Time.parse(information[:created_at])
     @updated_at = Time.parse(information[:updated_at])
+    @path = {:type => "transaction"}
+    @repo = repo
   end
 
-
+  def invoice
+    @path[:destination] = "invoice"
+    repo.pass_id(invoice_id, @path)
+  end
 end

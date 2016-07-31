@@ -54,5 +54,9 @@ class TestCustomerRepository < Minitest::Test
     assert_equal [], cr.find_all_by_last_name("bleh")
   end
 
+  def test_it_loads_data_from_file
+    cr = CustomerRepository.new("./data/test_customers.csv", self)
 
+    assert_equal 20, cr.all.length
+  end
 end

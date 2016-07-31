@@ -4,7 +4,8 @@ require_relative "../lib/file_reader"
 class TransactionRepository
   include FileReader
 
-  attr_reader :all
+  attr_reader :all,
+              :sales_engine
 
   def initialize(pathname, sales_engine)
     @sales_engine = sales_engine
@@ -38,5 +39,9 @@ class TransactionRepository
     all.find_all do |transaction|
       transaction.result == status
     end
+  end
+
+  def pass_id(id, path)
+    sales_engine.id_parser(id, path)
   end
 end
