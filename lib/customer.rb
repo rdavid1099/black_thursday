@@ -6,7 +6,6 @@ attr_reader :id,
             :created_at,
             :updated_at
 
-
   def initialize(information, repo)
     @id = information[:id].to_i
     @first_name = information[:first_name].to_s
