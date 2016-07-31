@@ -4,9 +4,9 @@ require './lib/invoice'
 class InvoiceTest < Minitest::Test
 
   def test_invoice_can_receive_a_hash_and_self
-    invoice = Invoice.new({:status => "fruit", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
+    invoice = Invoice.new({:status => "returned", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
 
-    assert_equal "fruit", invoice.status
+    assert_equal :returned, invoice.status
   end
 
   def test_it_returns_an_integer_id
@@ -32,7 +32,7 @@ class InvoiceTest < Minitest::Test
 
   def test_it_returns_the_status
     invoice = Invoice.new({:id => "29",:customer_id => "7",:merchant_id => "12334861",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
-    status= "shipped"
+    status= :shipped
 
     assert_equal status, invoice.status
   end

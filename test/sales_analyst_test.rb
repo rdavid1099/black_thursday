@@ -5,9 +5,8 @@ require './lib/item'
 
 class TestSalesAnalyst < Minitest::Test
   def setup
-    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv"})
+    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv", :invoices => "./data/invoices.csv"})
   end
-
 
   def test_sales_analyst_can_receive_sales_engine
     sa = SalesAnalyst.new(@se)
@@ -30,7 +29,7 @@ class TestSalesAnalyst < Minitest::Test
   def test_analyst_returns_zero_if_item_number_is_zero
     sa = SalesAnalyst.new(@se)
 
-    assert_equal 0, sa.validate_number_of_items(nil)
+    assert_equal 0, sa.validate_number(nil)
   end
 
   def test_analyst_creates_array_of_total_items_by_each_merchant
@@ -96,5 +95,59 @@ class TestSalesAnalyst < Minitest::Test
     sa = SalesAnalyst.new(@se)
 
     assert_instance_of Array, sa.golden_items
+  end
+
+  def test_analyst_generates_array_of_merchant_invoices
+    sa = SalesAnalyst.new(@se)
+    expected = sa.generate_total_invoices_of_each_merchant
+
+    assert_instance_of Array, expected
+    assert_equal true, expected.length > 200
+  end
+
+  def test_analyst_average_number_of_invoices_per_merchant
+    sa = SalesAnalyst.new(@se)
+    expected = sa.average_invoices_per_merchant
+
+    assert_equal 10.49, expected
+  end
+
+  def test_analyst_finds_std_deviation_of_merchants_and_invoices
+    sa = SalesAnalyst.new(@se)
+    expected = sa.average_invoices_per_merchant_standard_deviation
+
+    assert_equal 3.29, expected
+  end
+
+  def test_analyst_finds_top_performing_merchants_using_std_dev
+    sa = SalesAnalyst.new(@se)
+    expected = sa.top_merchants_by_invoice_count
+
+    assert_instance_of Array, expected
+    assert_equal true, expected[0].invoices.length > 17
+  end
+
+  def test_analyst_finds_lowest_performing_merchants_using_std_dev
+    sa = SalesAnalyst.new(@se)
+    expected = sa.bottom_merchants_by_invoice_count
+
+    assert_instance_of Array, expected
+    assert_equal true, expected[0].invoices.length < 4
+  end
+
+  def test_analyst_finds_top_days_comparing_invoice_counts
+    sa = SalesAnalyst.new(@se)
+    expected = sa.top_days_by_invoice_count
+
+    assert_instance_of Array, expected
+    assert_equal false, expected.length > 3
+  end
+
+  def test_analyst_calculates_percentage_of_invoices_sitting_at_given_status
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal true, sa.invoice_status(:pending) < 30
+    assert_equal true, sa.invoice_status(:shipped) > 50
+    assert_equal true, sa.invoice_status(:returned) < 20
   end
 end
