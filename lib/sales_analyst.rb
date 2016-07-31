@@ -47,6 +47,7 @@ class SalesAnalyst
     item_prices = items.map do |item|
       item.unit_price
     end
+    item_prices = [BigDecimal.new(0, 4)/100] if item_prices.empty?
     find_average(item_prices)
   end
 
@@ -138,9 +139,6 @@ class SalesAnalyst
       result
     end
   end
-# sa.invoice_status(:pending) # => 5.25
-# sa.invoice_status(:shipped) # => 93.75
-# sa.invoice_status(:returned) # => 1.00
 
   def top_days_by_invoice_count
     target = above_std_dev(

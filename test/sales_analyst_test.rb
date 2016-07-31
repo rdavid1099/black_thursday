@@ -5,7 +5,8 @@ require './lib/item'
 
 class TestSalesAnalyst < Minitest::Test
   def setup
-    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv", :invoices => "./data/invoices.csv"})
+    # @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv", :invoices => "./data/invoices.csv"})
+    @se = SalesEngine.from_csv({:items => "./data/test_items.csv", :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv"})
   end
 
   def test_sales_analyst_can_receive_sales_engine
@@ -17,13 +18,13 @@ class TestSalesAnalyst < Minitest::Test
   def test_sales_analyst_knows_total_number_of_items
     sa = SalesAnalyst.new(@se)
 
-    assert_equal true, sa.total_num_of_items > 30
+    assert_equal 20, sa.total_num_of_items
   end
 
   def test_sales_analyst_knows_total_number_of_merchants
     sa = SalesAnalyst.new(@se)
 
-    assert_equal true, sa.total_num_of_merchants > 30
+    assert_equal 20, sa.total_num_of_merchants
   end
 
   def test_analyst_returns_zero_if_item_number_is_zero
@@ -37,7 +38,7 @@ class TestSalesAnalyst < Minitest::Test
 
     assert_instance_of Array, sa.num_of_merchants_items
     assert_equal true, sa.num_of_merchants_items.length > 15
-    assert_equal 1367, sa.num_of_merchants_items.inject(:+)
+    assert_equal 20, sa.num_of_merchants_items.inject(:+)
   end
 
   def test_sales_analyst_calculates_average_amount_of_items_per_merchant
@@ -62,7 +63,7 @@ class TestSalesAnalyst < Minitest::Test
   def test_analyst_returns_array_of_merchants_with_the_most_items_for_sale
     sa = SalesAnalyst.new(@se)
     expected = sa.merchants_with_high_item_count.all? do |merchant|
-      merchant.items.length > 5
+      merchant.items.length > 1
     end
 
     assert_equal true, expected
@@ -81,8 +82,8 @@ class TestSalesAnalyst < Minitest::Test
   def test_it_can_calculate_the_average_item_price_per_merchant
     sa = SalesAnalyst.new(@se)
 
-    assert_instance_of BigDecimal, sa.average_item_price_for_merchant(12334471)
-    assert_equal 5.0, sa.average_item_price_for_merchant(12334471).to_f
+    assert_instance_of BigDecimal, sa.average_item_price_for_merchant(16)
+    assert_equal 81.48, sa.average_item_price_for_merchant(16).to_f
   end
 
   def test_analyst_can_find_the_average_of_averages_among_merchants
@@ -102,21 +103,21 @@ class TestSalesAnalyst < Minitest::Test
     expected = sa.generate_total_invoices_of_each_merchant
 
     assert_instance_of Array, expected
-    assert_equal true, expected.length > 200
+    assert_equal true, expected.length > 10
   end
 
   def test_analyst_average_number_of_invoices_per_merchant
     sa = SalesAnalyst.new(@se)
     expected = sa.average_invoices_per_merchant
 
-    assert_equal 10.49, expected
+    assert_equal 1.0, expected
   end
 
   def test_analyst_finds_std_deviation_of_merchants_and_invoices
     sa = SalesAnalyst.new(@se)
     expected = sa.average_invoices_per_merchant_standard_deviation
 
-    assert_equal 3.29, expected
+    assert_equal 1.08, expected
   end
 
   def test_analyst_finds_top_performing_merchants_using_std_dev
@@ -124,7 +125,7 @@ class TestSalesAnalyst < Minitest::Test
     expected = sa.top_merchants_by_invoice_count
 
     assert_instance_of Array, expected
-    assert_equal true, expected[0].invoices.length > 17
+    assert_equal true, expected[0].invoices.length > 1
   end
 
   def test_analyst_finds_lowest_performing_merchants_using_std_dev
@@ -132,7 +133,6 @@ class TestSalesAnalyst < Minitest::Test
     expected = sa.bottom_merchants_by_invoice_count
 
     assert_instance_of Array, expected
-    assert_equal true, expected[0].invoices.length < 4
   end
 
   def test_analyst_finds_top_days_comparing_invoice_counts
@@ -146,7 +146,7 @@ class TestSalesAnalyst < Minitest::Test
   def test_analyst_calculates_percentage_of_invoices_sitting_at_given_status
     sa = SalesAnalyst.new(@se)
 
-    assert_equal true, sa.invoice_status(:pending) < 30
+    assert_equal true, sa.invoice_status(:pending) < 50
     assert_equal true, sa.invoice_status(:shipped) > 50
     assert_equal true, sa.invoice_status(:returned) < 20
   end
