@@ -26,18 +26,21 @@ class CustomerRepository
 
   def find_all_by_first_name(search)
     all.find_all do |customer|
-      customer.first_name.to_s.include? search
+      customer.first_name.downcase.include?(search.downcase)
     end
   end
 
   def find_all_by_last_name(search)
     all.find_all do |customer|
-      customer.last_name.to_s.include? search
+      customer.last_name.downcase.include?(search.downcase)
     end
   end
 
   def pass_id(id, path)
     sales_engine.id_parser(id, path)
+  end
+
+  def inspect
   end
 
 end

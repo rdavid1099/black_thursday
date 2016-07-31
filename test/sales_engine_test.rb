@@ -147,4 +147,24 @@ class TestSalesEngine < Minitest::Test
     assert_instance_of Array, customer.merchants
     assert_instance_of Merchant, customer.merchants[0]
   end
+
+  def test_invoice_returns_true_or_false_regarding_payment
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+    invoice = se.invoices.find_by_id(10)
+
+    assert_equal true, invoice.is_paid_in_full?
+  end
+
+  def test_engine_calculates_total_amount_of_the_invoice
+    se = SalesEngine.from_csv({:items => "./data/test_items.csv",
+      :merchants => "./data/test_merchants.csv", :invoices => "./data/test_invoices.csv",
+      :transactions => "./data/test_transactions.csv", :customers => "./data/test_customers.csv"})
+    invoice = se.invoices.find_by_id(10)
+
+    assert_instance_of BigDecimal, invoice.total
+  end
 end
+
+# invoice.total returns the total $ amount of the invoice

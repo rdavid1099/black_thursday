@@ -44,4 +44,7 @@ class TransactionRepository
   def pass_id(id, path)
     sales_engine.id_parser(id, path)
   end
+
+  def inspect
+  end
 end

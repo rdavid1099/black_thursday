@@ -11,7 +11,7 @@ attr_reader :id,
   def initialize(information, repo)
     @id = information[:id].to_i
     @invoice_id = information[:invoice_id].to_i
-    @credit_card_number = information[:credit_card_number]
+    @credit_card_number = information[:credit_card_number].to_i
     @credit_card_expiration_date = information[:credit_card_expiration_date]
     @result = information[:result]
     @created_at = Time.parse(information[:created_at])

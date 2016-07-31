@@ -40,6 +40,5 @@ class MerchantRepository
   end
 
   def inspect
-
   end
 end

@@ -31,7 +31,7 @@ class Invoice
 
   def items
     @path[:destination] = "items"
-    repo.pass_id(merchant_id, @path)
+    repo.pass_id(id, @path)
   end
 
   def transactions
@@ -44,4 +44,13 @@ class Invoice
     repo.pass_id(customer_id, @path)
   end
 
+  def is_paid_in_full?
+    @path[:destination] = "paid_in_full"
+    repo.pass_id(id, @path)
+  end
+
+  def total
+    @path[:destination] = "total"
+    repo.pass_id(id, @path)
+  end
 end
