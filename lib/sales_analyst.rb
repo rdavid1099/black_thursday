@@ -7,6 +7,7 @@ class SalesAnalyst
               :total_num_of_items,
               :total_num_of_merchants,
               :total_num_of_invoices,
+              :total_num_of_customers,
               :num_of_merchants_items,
               :num_of_merchants_invoices,
               :average_item_price_for_merch
@@ -16,6 +17,7 @@ class SalesAnalyst
     @total_num_of_items = sales_engine.items.all.length
     @total_num_of_merchants = sales_engine.merchants.all.length
     @total_num_of_invoices = sales_engine.invoices.all.length
+    @total_num_of_customers = sales_engine.invoices.all.length
     @num_of_merchants_items = generate_total_items_of_each_merchant
     @num_of_merchants_invoices = generate_total_invoices_of_each_merchant
     @average_item_price_for_merch = generate_item_price_per_merch
@@ -156,6 +158,49 @@ class SalesAnalyst
     end.compact
   end
 
+  def total_revenue_by_date(date)
+    invoice_items_to_total = generate_requested_invoice_items(date)
+    invoice_items_to_total.reduce(0) do |result, invoice_item|
+      result += (invoice_item.unit_price * invoice_item.quantity)
+      result
+    end
+  end
+
+  def generate_requested_invoice_items(date)
+    date = Time.parse(date) if date.class == String
+    related_invoices = sales_engine.invoices.all.find_all do |invoice|
+      invoice.created_at.strftime("%Y%m%d") == date.strftime("%Y%m%d")
+    end
+    related_invoices.map do |invoice|
+      sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
+    end.flatten
+  end
+
+  def top_revenue_earners(amount = 20)
+    merchants_and_invoices = assign_merchant_ids_to_invoice_ids
+    top_earner_revenues = merchants_and_invoices.values.sort.reverse
+    top_earner_revenues.map.with_index do |revenue, i|
+      merchants_and_invoices.invert[revenue] if i < amount
+    end.compact
+  end
+
+  def assign_merchant_ids_to_invoice_ids
+    sales_engine.merchants.all.reduce({}) do |result, merchant|
+      result[merchant] = find_merchant_total_revenue(merchant.invoices)
+      result
+    end
+  end
+
+  def find_merchant_total_revenue(invoices)
+    invoice_items = invoices.map do |invoice|
+      sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
+    end.flatten
+    invoice_items.reduce(0) do |result, invoice_item|
+      result += (invoice_item.unit_price * invoice_item.quantity)
+      result
+    end
+  end
+
   def golden_items
     target = above_std_dev(
       average_average_price_per_merchant,
@@ -201,5 +246,4 @@ class SalesAnalyst
     return data.length unless data.nil?
     0
   end
-
 end
