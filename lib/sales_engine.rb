@@ -95,7 +95,7 @@ class SalesEngine
   end
 
   def self.find_payment_status(invoice_id)
-    @transactions.find_all_by_invoice_id(invoice_id).all? do |transaction|
+    @transactions.find_all_by_invoice_id(invoice_id).any? do |transaction|
       transaction.result == "success"
     end
   end
@@ -109,10 +109,10 @@ class SalesEngine
   end
 
   def self.validate_transaction_status(status, invoice_item)
-    return invoice_item.unit_price unless status == "failed"
-    0
+    unless status == "failed"
+      invoice_item.unit_price * invoice_item.quantity
+    else
+      0
+    end
   end
-    # total_transactions.reduce(0) do |result, transaction|
-    #   result += transaction
-    # end
 end

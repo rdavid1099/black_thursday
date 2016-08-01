@@ -19,7 +19,7 @@ class TestTransaction < Minitest::Test
 
   def test_it_returns_the_credit_card_number
     transaction = Transaction.new({:id => "1", :invoice_id => "2179", :credit_card_number => "4068631943231473", :credit_card_expiration_date => "0217",:result => "success", :created_at => "2012-02-26 20:56:56 UTC", :updated_at => "2012-02-26 20:56:56 UTC"}, self)
-    ccn = "4068631943231473"
+    ccn = 4068631943231473
 
     assert_equal ccn, transaction.credit_card_number
   end
