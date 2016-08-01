@@ -177,11 +177,13 @@ class SalesAnalyst
   end
 
   def top_revenue_earners(amount = 20)
+    top_earners = Array.new
     merchants_and_invoices = assign_merchant_ids_to_invoice_ids
     top_earner_revenues = merchants_and_invoices.values.sort.reverse
-    top_earner_revenues.map.with_index do |revenue, i|
-      merchants_and_invoices.invert[revenue] if i < amount
-    end.compact
+    amount.times do |counter|
+      top_earners << merchants_and_invoices.invert[top_earner_revenues[counter]]
+    end
+    top_earners
   end
 
   def assign_merchant_ids_to_invoice_ids
@@ -192,11 +194,8 @@ class SalesAnalyst
   end
 
   def find_merchant_total_revenue(invoices)
-    invoice_items = invoices.map do |invoice|
-      sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
-    end.flatten
-    invoice_items.reduce(0) do |result, invoice_item|
-      result += (invoice_item.unit_price * invoice_item.quantity)
+    invoices.reduce(0) do |result, invoice|
+      result += invoice.total if invoice.is_paid_in_full?
       result
     end
   end

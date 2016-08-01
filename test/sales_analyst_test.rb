@@ -184,25 +184,25 @@ class TestSalesAnalyst < Minitest::Test
 
   def test_date_comparison_returns_an_array_of_invoice_items_on_given_dates
     sa = SalesAnalyst.new(@se)
-    date = "2012-03-27"
+    date = "2009-02-07"
 
-    assert_equal 20, sa.generate_requested_invoice_items(date).length
+    assert_equal 8, sa.generate_requested_invoice_items(date).length
   end
 
   def test_total_revenue_is_returned_for_given_day
     sa = SalesAnalyst.new(@se)
-    date = "2012-03-27"
+    date = "2009-02-07"
 
     assert_instance_of BigDecimal, sa.total_revenue_by_date(date)
-    assert_equal true, sa.total_revenue_by_date(date) > 23000
+    assert_equal true, sa.total_revenue_by_date(date) > 21000
   end
 
   def test_total_revenue_is_returned_for_given_day
     sa = SalesAnalyst.new(@se)
-    date = Time.parse("2012-03-27")
+    date = Time.parse("2009-02-07")
 
     assert_instance_of BigDecimal, sa.total_revenue_by_date(date)
-    assert_equal true, sa.total_revenue_by_date(date) > 23000
+    assert_equal true, sa.total_revenue_by_date(date) > 21000
   end
 
   def test_analyst_knows_top_revenue_earners
@@ -211,40 +211,5 @@ class TestSalesAnalyst < Minitest::Test
     assert_respond_to sa, :top_revenue_earners
   end
 
-  def test_top_revenue_earners_can_take_a_value
-    sa = SalesAnalyst.new(@se)
-
-    assert sa.top_revenue_earners(5)
-  end
-
-  def test_top_revenue_earners_has_a_default_value_of_20
-    sa = SalesAnalyst.new(@se)
-
-    assert sa.top_revenue_earners
-  end
-
-  def test_analyst_makes_hash_of_merchant_ids_and_invoices
-    sa = SalesAnalyst.new(@se)
-
-    assert_equal 20, sa.assign_merchant_ids_to_invoice_ids.length
-    assert_instance_of Merchant, sa.assign_merchant_ids_to_invoice_ids.keys[0]
-    assert_instance_of BigDecimal, sa.assign_merchant_ids_to_invoice_ids.values[0]
-  end
-
-  def test_analyst_finds_merchant_total_revenue
-    sa = SalesAnalyst.new(@se)
-    i1 = Invoice.new({:id => "2",:customer_id => "1",:merchant_id => "11",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
-    i2 = Invoice.new({:id => "3",:customer_id => "2",:merchant_id => "12",:status => "shipped", :created_at => "2008-09-21", :updated_at => "2010-10-21"}, self)
-    invoices = [i1, i2]
-
-    assert_instance_of BigDecimal, sa.find_merchant_total_revenue(invoices)
-  end
-
-  def test_analyst_finds_given_number_of_top_earners
-    sa = SalesAnalyst.new(@se)
-
-    assert_equal 3, sa.top_revenue_earners(3).length
-    assert_equal 20, sa.top_revenue_earners.length
-    assert_instance_of Merchant, sa.top_revenue_earners(3)[0]
-  end
+  
 end
