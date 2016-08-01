@@ -23,4 +23,9 @@ class Merchant
     @path[:destination] = "invoices"
     repo.pass_id(id, @path)
   end
+
+  def customers
+    @path[:destination] = "customers"
+    repo.pass_id(id, @path)
+  end
 end

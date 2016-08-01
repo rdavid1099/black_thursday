@@ -69,17 +69,17 @@ class SalesAnalyst
 
   def average_invoices_per_merchant_standard_deviation
     standard_deviation(
-    num_of_merchants_invoices,
-    average_invoices_per_merchant,
-    total_num_of_merchants
+      num_of_merchants_invoices,
+      average_invoices_per_merchant,
+      total_num_of_merchants
     )
   end
 
   def average_invoices_per_day_standard_deviation
     standard_deviation(
-    split_invoices_by_creation_date,
-    average_invoices_created_per_day,
-    7
+      split_invoices_by_creation_date,
+      average_invoices_created_per_day,
+      7
     )
   end
 

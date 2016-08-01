@@ -15,6 +15,6 @@ class TestFileReader < Minitest::Test
   def test_file_reader_loads_data_using_pathname
     generate_from_file('./data/test_merchants.csv', self)
 
-    assert_equal 38, @test_array.length
+    assert_equal 20, @test_array.length
   end
 end

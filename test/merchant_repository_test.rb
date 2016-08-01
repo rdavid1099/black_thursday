@@ -50,30 +50,29 @@ class TestMerchantRepository < Minitest::Test
   def test_merchant_repo_reads_from_csv
     mr = MerchantRepository.new("./data/test_merchants.csv", self)
 
-    assert_equal true, mr.all.length > 20
+    assert_equal 20, mr.all.length
   end
 
   def test_merch_repo_finds_by_id_with_csv
     mr = MerchantRepository.new("./data/test_merchants.csv", self)
 
-    assert_equal "MaidichaToos", mr.find_by_id("12334454").name
-    assert_equal "EllGe", mr.find_by_id("12334542").name
+    assert_equal "Mr. Test", mr.find_by_id(12).name
+    assert_equal "Mr. Test", mr.find_by_id("22").name
     assert_equal nil, mr.find_by_id("99999999999")
   end
 
   def test_merch_repo_finds_by_name_with_csv
     mr = MerchantRepository.new("./data/test_merchants.csv", self)
 
-    assert_equal 12334454, mr.find_by_name("MaidichaToos").id
-    assert_equal 12334542, mr.find_by_name("EllGe").id
+    assert_equal 10, mr.find_by_name("Mr. Test").id
     assert_equal nil, mr.find_by_name("Eric Cartman")
   end
 
   def test_merch_repo_can_find_all_by_name_from_csv
     mr = MerchantRepository.new("./data/test_merchants.csv", self)
 
-    assert_equal true, mr.find_all_by_name("a").length > 10
+    assert_equal true, mr.find_all_by_name("e").length > 10
     assert_equal 0, mr.find_all_by_name("zxy").length
-    assert_equal 1, mr.find_all_by_name("poop").length
+    assert_equal 0, mr.find_all_by_name("poop").length
   end
 end
