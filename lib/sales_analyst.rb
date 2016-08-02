@@ -159,21 +159,37 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    invoice_items_to_total = generate_requested_invoice_items(date)
-    invoice_items_to_total.reduce(0) do |result, invoice_item|
-      result += (invoice_item.unit_price * invoice_item.quantity)
+    invoices_to_total = generate_requested_invoices(date)
+    invoices_to_total.reduce(0) do |result, invoice|
+      result += invoice.total
       result
     end
   end
 
-  def generate_requested_invoice_items(date)
+  def generate_requested_invoices(date)
     date = Time.parse(date) if date.class == String
     related_invoices = sales_engine.invoices.all.find_all do |invoice|
       invoice.created_at.strftime("%Y%m%d") == date.strftime("%Y%m%d")
     end
-    related_invoices.map do |invoice|
+  end
+
+  def quantity_of_items_by_merchant(merch_id)
+    requested_merchant = sales_engine.merchants.find_by_id(merch_id)
+    requested_merchant.invoices.map do |invoice|
       sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
     end.flatten
+  end
+
+  def revenue_by_merchant(merch_id)
+    requested_merchant = sales_engine.merchants.find_by_id(merch_id)
+    requested_merchant.invoices.reduce(0) do |result, invoice|
+      result += invoice.total
+      result
+    end
+  end
+
+  def merchants_ranked_by_revenue
+    top_revenue_earners(total_num_of_merchants)
   end
 
   def top_revenue_earners(amount = 20)
@@ -195,7 +211,46 @@ class SalesAnalyst
 
   def find_merchant_total_revenue(invoices)
     invoices.reduce(0) do |result, invoice|
-      result += invoice.total if invoice.is_paid_in_full?
+      result += invoice.total
+      result
+    end
+  end
+
+  def merchants_with_pending_invoices
+    sales_engine.merchants.all.reduce([]) do |result, merchant|
+      result << merchant if merchant_transaction_is_pending(merchant)
+      result
+    end
+  end
+
+  def merchant_transaction_is_pending(merchant)
+    merchant.invoices.any? do |invoice|
+      !invoice.is_paid_in_full?
+    end
+  end
+
+  def merchants_with_only_one_item
+    sales_engine.merchants.all.reduce([]) do |result, merchant|
+      result << merchant if find_merchant_item_count(merchant) == 1
+      result
+    end
+  end
+
+  def find_merchant_item_count(merchant)
+    merchant.items.length
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    requested_merchants = merchants_registered_in_a_month(month)
+    requested_merchants.reduce([]) do |result, merchant|
+      result << merchant if find_merchant_item_count(merchant) == 1
+      result
+    end
+  end
+
+  def merchants_registered_in_a_month(month)
+    sales_engine.merchants.all.reduce([]) do |result, merchant|
+      result << merchant if merchant.created_at.strftime("%B") == month
       result
     end
   end

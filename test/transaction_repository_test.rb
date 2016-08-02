@@ -88,8 +88,8 @@ class TestTransactionRepository < Minitest::Test
   def test_it_finds_all_by_result_using_data_from_csv
     tr = TransactionRepository.new("./data/test_transactions.csv", self)
 
-    assert_equal 3, tr.find_all_by_result("failed").length
-    assert_equal 17, tr.find_all_by_result("success").length
+    assert_equal 4, tr.find_all_by_result("failed").length
+    assert_equal 16, tr.find_all_by_result("success").length
     assert_equal 0, tr.find_all_by_result("pending").length
   end
 end

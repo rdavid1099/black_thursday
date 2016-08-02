@@ -101,18 +101,12 @@ class SalesEngine
   end
 
   def self.total_payment(invoice_id)
-    total_transactions = @transactions.find_all_by_invoice_id(invoice_id)
     total_invoices = @invoice_items.find_all_by_invoice_id(invoice_id)
-    total_invoices.map.with_index do |invoice_item, index|
-      validate_transaction_status(total_transactions[index], invoice_item)
-    end.reduce(:+)
-  end
-
-  def self.validate_transaction_status(status, invoice_item)
-    unless status == "failed"
-      invoice_item.unit_price * invoice_item.quantity
-    else
-      0
+    total_invoices.reduce(0) do |result, invoice_item|
+      if find_payment_status(invoice_item.invoice_id)
+        result += invoice_item.unit_price * invoice_item.quantity
+      end
+      result
     end
   end
 end
