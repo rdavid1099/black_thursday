@@ -279,9 +279,8 @@ class TestSalesAnalyst < Minitest::Test
   def test_analyst_can_find_quantity_by_merchant_id
     sa = SalesAnalyst.new(@se)
 
-    assert_instance_of Hash, sa.quantity_of_items_by_merchant(10)
-    assert_instance_of Fixnum,  sa.quantity_of_items_by_merchant(10).keys[0]
-    assert_equal 5, sa.quantity_of_items_by_merchant(10).length
+    assert_instance_of Array, sa.items_by_merchant(10)
+    assert_instance_of Item,  sa.items_by_merchant(10)[0]
   end
 
   def test_analyst_finds_highest_selling_item_for_given_merchant
@@ -291,8 +290,11 @@ class TestSalesAnalyst < Minitest::Test
     assert_equal 55, sa.most_sold_item_for_merchant(10)[0].id
   end
 
-  def 
+  def test_analyst_finds_best_selling_items
+    sa = SalesAnalyst.new(@se)
 
+    assert_instance_of Item, sa.best_item_for_merchant(10)
+    assert_equal 55, sa.best_item_for_merchant(10).id
   end
 # sa.best_item_for_merchant(merchant_id) #=> item (in terms of revenue generated)
 

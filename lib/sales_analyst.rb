@@ -173,34 +173,60 @@ class SalesAnalyst
     end
   end
 
-  def most_sold_item_for_merchant(merch_id)
-    items_sold_by_merchant = quantity_of_items_by_merchant(merch_id)
-    top_selling_items = items_sold_by_merchant.keys.sort.reverse
-    items_sold_by_merchant[top_selling_items[0]]
+  def best_item_for_merchant(merch_id)
+    items_sold_by_merchant = items_by_merchant(merch_id)
+    highest_revenue_items = generate_item_revenue(items_sold_by_merchant)
+    sorted_items_by_revenue = highest_revenue_items.keys.sort.reverse
+    highest_revenue_items[sorted_items_by_revenue[0]][0]
   end
 
-  def quantity_of_items_by_merchant(merch_id)
+  def most_sold_item_for_merchant(merch_id)
+    items_sold_by_merchant = items_by_merchant(merch_id)
+    quantity_of_items_sold = generate_quantity_of_items(items_sold_by_merchant)
+    top_selling_items = quantity_of_items_sold.keys.sort.reverse
+    quantity_of_items_sold[top_selling_items[0]]
+  end
+
+  def items_by_merchant(merch_id)
     requested_merchant = sales_engine.merchants.find_by_id(merch_id)
-    requested_invoice_items = requested_merchant.invoices.map do |invoice|
+    @requested_invoice_items = requested_merchant.invoices.map do |invoice|
       if invoice.is_paid_in_full?
         sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
       end
     end.flatten.compact
-    generate_quantity_of_items(requested_invoice_items)
+    generate_items(@requested_invoice_items)
   end
 
-  def generate_quantity_of_items(invoice_items)
-    requested_items = invoice_items.map do |invoice_item|
+  def generate_items(invoice_items)
+    invoice_items.map do |invoice_item|
       sales_engine.items.find_by_id(invoice_item.item_id)
     end
-    requested_items.group_by do |item|
-      get_total_amount_of_item(item, invoice_items)
+  end
+
+  def generate_quantity_of_items(items)
+    items.group_by do |item|
+      get_total_amount_of_item(item, @requested_invoice_items)
     end
   end
 
   def get_total_amount_of_item(item, invoice_items)
     invoice_items.reduce(0) do |result, invoice_item|
       result += invoice_item.quantity if invoice_item.item_id == item.id
+      result
+    end
+  end
+
+  def generate_item_revenue(items)
+    items.group_by do |item|
+      get_total_revenue_of_item(item, @requested_invoice_items)
+    end
+  end
+
+  def get_total_revenue_of_item(item, invoice_items)
+    invoice_items.reduce(0) do |result, invoice_item|
+      if invoice_item.item_id == item.id
+        result += (invoice_item.quantity * invoice_item.unit_price)
+      end
       result
     end
   end
