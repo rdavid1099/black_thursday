@@ -15,7 +15,6 @@ attr_reader :id,
     @updated_at = Time.parse(information[:updated_at])
     @path = {:type => "customer"}
     @repo = repo
-
   end
 
   def merchants
