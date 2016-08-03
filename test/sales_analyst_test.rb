@@ -12,7 +12,7 @@ class TestSalesAnalyst < Minitest::Test
     #                             :invoices => "./data/invoices.csv",
     #                             :transactions => "./data/transactions.csv",
     #                             :customers => "./data/customers.csv",
-                                # :invoice_items => "./data/invoice_items.csv"}})
+    #                             :invoice_items => "./data/invoice_items.csv"})
     @se = SalesEngine.from_csv({:items => "./data/test_items.csv",
                                 :merchants => "./data/test_merchants.csv",
                                 :invoices => "./data/test_invoices.csv",
@@ -280,12 +280,20 @@ class TestSalesAnalyst < Minitest::Test
     sa = SalesAnalyst.new(@se)
 
     assert_instance_of Hash, sa.quantity_of_items_by_merchant(10)
-    assert_instance_of Item,  sa.quantity_of_items_by_merchant(10).keys[0]
+    assert_instance_of Fixnum,  sa.quantity_of_items_by_merchant(10).keys[0]
+    assert_equal 5, sa.quantity_of_items_by_merchant(10).length
   end
 
-    # 2,50,1,9,23324,2012-03-27 14:54:09 UTC,2012-03-27 14:54:09 UTC
+  def test_analyst_finds_highest_selling_item_for_given_merchant
+    sa = SalesAnalyst.new(@se)
 
-# sa.most_sold_item_for_merchant(merchant_id) #=> [item] (in terms of quantity sold) or, if there is a tie, [item, item, item]
+    assert_instance_of Item, sa.most_sold_item_for_merchant(10)[0]
+    assert_equal 55, sa.most_sold_item_for_merchant(10)[0].id
+  end
+
+  def 
+
+  end
 # sa.best_item_for_merchant(merchant_id) #=> item (in terms of revenue generated)
 
 end

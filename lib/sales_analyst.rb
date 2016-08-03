@@ -173,11 +173,36 @@ class SalesAnalyst
     end
   end
 
+  def most_sold_item_for_merchant(merch_id)
+    items_sold_by_merchant = quantity_of_items_by_merchant(merch_id)
+    top_selling_items = items_sold_by_merchant.keys.sort.reverse
+    items_sold_by_merchant[top_selling_items[0]]
+  end
+
   def quantity_of_items_by_merchant(merch_id)
     requested_merchant = sales_engine.merchants.find_by_id(merch_id)
-    requested_merchant.invoices.map do |invoice|
-      sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
-    end.flatten
+    requested_invoice_items = requested_merchant.invoices.map do |invoice|
+      if invoice.is_paid_in_full?
+        sales_engine.invoice_items.find_all_by_invoice_id(invoice.id)
+      end
+    end.flatten.compact
+    generate_quantity_of_items(requested_invoice_items)
+  end
+
+  def generate_quantity_of_items(invoice_items)
+    requested_items = invoice_items.map do |invoice_item|
+      sales_engine.items.find_by_id(invoice_item.item_id)
+    end
+    requested_items.group_by do |item|
+      get_total_amount_of_item(item, invoice_items)
+    end
+  end
+
+  def get_total_amount_of_item(item, invoice_items)
+    invoice_items.reduce(0) do |result, invoice_item|
+      result += invoice_item.quantity if invoice_item.item_id == item.id
+      result
+    end
   end
 
   def revenue_by_merchant(merch_id)
