@@ -2,4 +2,4 @@ require 'SimpleCov'
 SimpleCov.start
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'minitest/mock'
+require 'pry'
