@@ -145,7 +145,7 @@ class SalesAnalyst
   def top_days_by_invoice_count
     target = above_std_dev(
       average_invoices_created_per_day,
-      average_invoices_per_day_standard_deviation,
+      average_invoices_per_day_standard_deviation
     )
     find_top_days_by_invoice_count(target)
   end
@@ -323,8 +323,7 @@ class SalesAnalyst
 
   def split_invoices_by_creation_date
     sales_engine.invoices.all.reduce(Array.new(7,0)) do |result, invoice|
-      creation_date = invoice.created_at
-      result[creation_date.wday] += 1
+      result[invoice.created_at.wday] += 1
       result
     end
   end
